@@ -84,7 +84,7 @@ Article body in markdown here.
 
 ### Available categories
 
-Defined in `src/lib/categories.ts`: `getting-started`, `account-and-billing`, `features`, `troubleshooting`.
+Defined in `src/lib/categories.ts`: `getting-started`, `features`, `troubleshooting`.
 
 There is also a virtual `faq` category — not a real directory, but articles with `faq: true` are collected and displayed as FAQ.
 

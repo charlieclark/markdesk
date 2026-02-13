@@ -7,13 +7,7 @@ export const categories: Category[] = [
     description: 'Learn the basics of setting up and using the product.',
     icon: '🚀',
   },
-  {
-    slug: 'account-and-billing',
-    title: 'Account & Billing',
-    description: 'Manage your account, subscription, and payment details.',
-    icon: '💳',
-  },
-  {
+{
     slug: 'features',
     title: 'Features',
     description: 'Explore product features and how to use them.',

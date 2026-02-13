@@ -76,7 +76,6 @@ Article body in markdown here.
 
 Default categories (edit `src/lib/categories.ts` to customize):
 - `getting-started` — Getting Started
-- `account-and-billing` — Account & Billing
 - `features` — Features
 - `troubleshooting` — Troubleshooting
 

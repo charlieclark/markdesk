@@ -169,6 +169,14 @@ npm install && npm run dev</code></pre>
   <div class="toast" id="toast">Copied to clipboard</div>
 
   <script>
+    window.MarkdeskConfig = {
+      helpCenterUrl: 'https://help.markdesk.dev',
+      title: 'Help',
+    };
+  </script>
+  <script src="https://help.markdesk.dev/beacon.js" async></script>
+
+  <script>
     function copyCommand() {
       navigator.clipboard.writeText('npx skills add charlieclark/markdesk');
       var copyIcon = document.getElementById('copy-icon');
