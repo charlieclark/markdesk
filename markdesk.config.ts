@@ -10,7 +10,12 @@ const config: MarkdeskConfig = {
   emailSender: 'resend',
   footer: { termsUrl: '', privacyUrl: '' },
   allowedOrigins: [],
-  beacon: { title: 'Help' },
+  beacon: {
+    title: 'Help',
+    autoShowModal: true,
+    modalDelay: 5000,
+    modalMaxAgeDays: 180,
+  },
 };
 
 export default config;
