@@ -11,6 +11,17 @@ export const metadata: Metadata = {
     template: `%s | ${config.name} Help`,
   },
   description: `Find answers, guides, and product updates for ${config.name}.`,
+  openGraph: {
+    title: `${config.name} Help Center`,
+    description: `Find answers, guides, and product updates for ${config.name}.`,
+    images: [{ url: '/og-image.png', width: 1456, height: 816 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${config.name} Help Center`,
+    description: `Find answers, guides, and product updates for ${config.name}.`,
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RootLayout({
