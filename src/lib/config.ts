@@ -8,7 +8,7 @@ export interface MarkdeskConfig {
   emailSender: 'sendgrid' | 'resend' | 'nodemailer';
   footer: { termsUrl: string; privacyUrl: string };
   allowedOrigins: string[];
-  beacon: { title: string; autoShowModal?: boolean };
+  beacon: { title: string; autoShowModal?: boolean; modalDelay?: number };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports

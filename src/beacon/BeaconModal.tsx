@@ -14,6 +14,7 @@ interface UpdateWithContent {
 
 interface BeaconModalProps {
   helpCenterUrl: string;
+  delay?: number;
   onDismiss?: () => void;
 }
 
@@ -25,10 +26,19 @@ const badgeLabels: Record<string, string> = {
   announcement: 'Announcement',
 };
 
-export default function BeaconModal({ helpCenterUrl, onDismiss }: BeaconModalProps) {
+export default function BeaconModal({ helpCenterUrl, delay = 5000, onDismiss }: BeaconModalProps) {
   const [update, setUpdate] = useState<UpdateWithContent | null>(null);
+  const [ready, setReady] = useState(delay <= 0);
 
   useEffect(() => {
+    if (delay <= 0) return;
+    const timer = setTimeout(() => setReady(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  useEffect(() => {
+    if (!ready) return;
+
     // Fetch updates and check for undismissed modal updates
     fetch(`${helpCenterUrl}/content/updates.json`)
       .then((res) => res.json())
@@ -59,7 +69,7 @@ export default function BeaconModal({ helpCenterUrl, onDismiss }: BeaconModalPro
         });
       })
       .catch(() => {});
-  }, [helpCenterUrl]);
+  }, [helpCenterUrl, ready]);
 
   function handleDismiss() {
     if (!update) return;

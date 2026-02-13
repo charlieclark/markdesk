@@ -10,6 +10,7 @@ interface Config {
   position?: string;
   title?: string;
   autoShowModal?: boolean;
+  modalDelay?: number;
 }
 
 export default function BeaconApp({ config }: { config: Config }) {
@@ -98,7 +99,7 @@ export default function BeaconApp({ config }: { config: Config }) {
   return (
     <div>
       {modalEnabled && (
-        <BeaconModal helpCenterUrl={helpCenterUrl} onDismiss={checkUnseen} />
+        <BeaconModal helpCenterUrl={helpCenterUrl} delay={config.modalDelay ?? 5000} onDismiss={checkUnseen} />
       )}
 
       {isOpen && <div class="mdb-mobile-overlay" onClick={handleClose} />}
