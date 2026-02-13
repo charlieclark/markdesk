@@ -36,13 +36,24 @@ Use `AskUserQuestion` to ask:
 
 ## Step 3: Ask About Images
 
-Ask if the user has any screenshots or images to include. If yes:
+Ask if the user has any screenshots or images to include. Users can:
 
-- Copy images to the appropriate directory in the help center project:
-  - Articles: `public/images/articles/`
-  - Updates: `public/images/updates/`
-- Name files as `{slug}-{number}.{ext}` (e.g., `my-feature-1.png`)
-- Reference in markdown as `![Alt text](/images/articles/{slug}-1.png)`
+- **Drag and drop images** directly into the chat — the image path will be provided (e.g. `/Users/name/Desktop/screenshot.png`)
+- **Provide file paths** to existing images on disk
+
+When the user provides images (via drag-and-drop or path):
+
+1. Copy each image to the appropriate directory in the help center project:
+   - Articles: `public/images/articles/`
+   - Updates: `public/images/updates/`
+2. Rename to a clean slug-based filename: `{slug}-{number}.{ext}` (e.g., `my-feature-1.png`)
+3. Reference in markdown as `![Alt text](/images/articles/{slug}-1.png)` or `![Alt text](/images/updates/{slug}-1.png)`
+
+**Important — macOS screenshot filenames:** macOS screenshots have spaces in the filename (e.g. `Screenshot 2026-02-13 at 12.17.27 PM.png`). Always quote the source path when copying:
+
+```bash
+cp "/Users/name/Desktop/Screenshot 2026-02-13 at 12.17.27 PM.png" public/images/updates/my-feature-1.png
+```
 
 ## Step 4: Category Selection (for articles)
 
