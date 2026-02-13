@@ -42,7 +42,7 @@ Use `AskUserQuestion` to ask the user the following (you can batch multiple ques
 1. **Project directory name** — What should the help center directory be called? (default: `help-center`)
 2. **Brand name** — What is your product/company name?
 3. **Product URL** — What is your main product URL? (e.g., `https://example.com`)
-4. **Help center URL** — Where will the help center be hosted? (e.g., `https://help.example.com`)
+4. **Help center URL** — What subdomain will the help center live on? (e.g., `https://help.example.com`). Markdesk is a standalone Next.js site and must be deployed on its own subdomain, not a subpath.
 5. **Primary color** — What is your brand's primary color? (hex code, default: `#4b68af`)
 6. **Email sender** — Which email provider do you want to use for the contact form?
    - Resend (recommended)
