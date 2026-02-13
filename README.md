@@ -122,8 +122,9 @@ window.Markdesk.open('updates')   // Open to Updates tab
 window.Markdesk.open('ask')       // Open to Contact tab
 window.Markdesk.close()
 window.Markdesk.toggle()
-window.Markdesk.identify({ name, email, userId })
-window.Markdesk.article(slug)     // Open a specific article
+window.Markdesk.identify({ email })  // Pre-fill contact form email
+window.Markdesk.showModal()          // Enable modal (when autoShowModal is false)
+window.Markdesk.article(slug)        // Open a specific article
 ```
 
 ## Email Setup
