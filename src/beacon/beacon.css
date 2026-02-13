@@ -318,6 +318,7 @@
   display: block;
   font-size: 13px;
   line-height: 1.7;
+  overflow: hidden;
 }
 
 #markdesk-beacon .mdb-article-body h1,

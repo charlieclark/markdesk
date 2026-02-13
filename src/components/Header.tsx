@@ -1,21 +1,51 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getConfig } from '@/lib/config';
 
 const config = getConfig();
+const STORAGE_KEY = 'markdesk-last-seen-update';
 
 export default function Header() {
   const pathname = usePathname();
+  const [hasUnread, setHasUnread] = useState(false);
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
   };
 
+  useEffect(() => {
+    fetch('/content/updates.json')
+      .then((res) => res.json())
+      .then((updates: { date: string }[]) => {
+        if (!updates.length) return;
+        const latestDate = updates[0].date;
+        const lastSeen = localStorage.getItem(STORAGE_KEY);
+
+        if (pathname.startsWith('/updates')) {
+          localStorage.setItem(STORAGE_KEY, latestDate);
+          setHasUnread(false);
+        } else if (!lastSeen || new Date(latestDate) > new Date(lastSeen)) {
+          setHasUnread(true);
+        }
+      })
+      .catch(() => {});
+  }, [pathname]);
+
   const linkClass = (href: string) =>
     `${isActive(href) ? 'text-white font-medium underline underline-offset-4 decoration-2' : 'text-white/70'} hover:text-white transition-colors`;
+
+  const updatesLink = (
+    <Link href="/updates" className={`${linkClass('/updates')} relative`}>
+      Updates
+      {hasUnread && (
+        <span className="absolute -top-1 -right-2.5 w-2 h-2 bg-red-400 rounded-full" />
+      )}
+    </Link>
+  );
 
   return (
     <header className="bg-primary text-white">
@@ -32,9 +62,7 @@ export default function Header() {
           <Link href="/" className={linkClass('/')}>
             Articles
           </Link>
-          <Link href="/updates" className={linkClass('/updates')}>
-            Updates
-          </Link>
+          {updatesLink}
           <Link href="/contact" className={linkClass('/contact')}>
             Contact
           </Link>
@@ -49,9 +77,7 @@ export default function Header() {
           <Link href="/" className={linkClass('/')}>
             Articles
           </Link>
-          <Link href="/updates" className={linkClass('/updates')}>
-            Updates
-          </Link>
+          {updatesLink}
           <Link href="/contact" className={linkClass('/contact')}>
             Contact
           </Link>
