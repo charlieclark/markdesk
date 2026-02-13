@@ -1,0 +1,51 @@
+{
+  "name": "markdesk",
+  "version": "1.0.0",
+  "description": "Open-source help center with an embeddable beacon widget",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/charlieclark/markdesk.git"
+  },
+  "homepage": "https://github.com/charlieclark/markdesk",
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run build:search && npm run build:content && npm run build:beacon && next build",
+    "build:content": "tsx scripts/build-content.ts",
+    "build:search": "tsx scripts/build-search-index.ts",
+    "build:beacon": "tsx scripts/build-beacon.ts",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "flexsearch": "^0.8.212",
+    "gray-matter": "^4.0.3",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "rehype-raw": "^7.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "remark-rehype": "^11.1.2"
+  },
+  "optionalDependencies": {
+    "@sendgrid/mail": "^8.1.6",
+    "resend": "^4.0.0",
+    "nodemailer": "^6.9.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "lucide-react": "^0.563.0",
+    "preact": "^10.28.3",
+    "tailwindcss": "^4",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

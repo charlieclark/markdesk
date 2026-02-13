@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdesk — Open-source help center with an embeddable beacon widget</title>
+  <meta name="description" content="Markdesk is an open-source help center built with Next.js and Preact. Features markdown articles, product updates, and an embeddable beacon widget.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="hero">
+    <h1>Markdesk</h1>
+    <p>Open-source help center with an embeddable beacon widget. Markdown articles, product updates, and a contact form — all in one.</p>
+    <a href="https://github.com/charlieclark/markdesk" class="hero-cta">Get Started</a>
+  </div>
+
+  <section>
+    <div class="container">
+      <h2>Features</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">📝</div>
+          <h3>Markdown Articles</h3>
+          <p>Write help articles in markdown with frontmatter. Organized by category with full-text search.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📢</div>
+          <h3>Product Updates</h3>
+          <p>Changelog entries with badge categories. Show new updates as modal popups in the beacon.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💬</div>
+          <h3>Beacon Widget</h3>
+          <p>Embeddable ~47KB Preact widget with search, articles, contact form, and update notifications.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📧</div>
+          <h3>Contact Form</h3>
+          <p>Built-in contact form with support for SendGrid, Resend, or Nodemailer (SMTP).</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎨</div>
+          <h3>Configurable</h3>
+          <p>Single config file for branding, colors, email provider, footer links, and more.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <h3>Next.js 16</h3>
+          <p>Built on Next.js with static generation, API routes, and Tailwind CSS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Quick Start</h2>
+      <pre><code># Clone the repo
+git clone https://github.com/charlieclark/markdesk.git my-help-center
+cd my-help-center
+rm -rf .git
+
+# Configure your branding
+# Edit markdesk.config.ts
+
+# Install and run
+npm install
+npm run dev</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Configuration</h2>
+      <p>All settings live in a single <code>markdesk.config.ts</code> file:</p>
+      <pre><code>{
+  name: 'My Product',
+  siteUrl: 'https://help.example.com',
+  productUrl: 'https://example.com',
+  supportEmail: 'support@example.com',
+  fromEmail: 'help@example.com',
+  colors: { primary: '#4b68af' },
+  emailSender: 'resend',
+  footer: { termsUrl: '', privacyUrl: '' },
+  allowedOrigins: [],
+  beacon: { title: 'Help' },
+}</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Beacon API</h2>
+      <p>Embed the beacon on any site with two script tags:</p>
+      <pre><code>&lt;script&gt;
+  window.MarkdeskConfig = {
+    helpCenterUrl: 'https://help.example.com',
+    title: 'Help',
+  };
+&lt;/script&gt;
+&lt;script src="https://help.example.com/beacon.js" async&gt;&lt;/script&gt;</code></pre>
+
+      <h3>JavaScript API</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Markdesk.open('answers')</code></td><td>Open beacon to Answers tab</td></tr>
+          <tr><td><code>Markdesk.open('updates')</code></td><td>Open beacon to Updates tab</td></tr>
+          <tr><td><code>Markdesk.open('ask')</code></td><td>Open beacon to Contact tab</td></tr>
+          <tr><td><code>Markdesk.close()</code></td><td>Close the beacon</td></tr>
+          <tr><td><code>Markdesk.toggle()</code></td><td>Toggle beacon open/closed</td></tr>
+          <tr><td><code>Markdesk.identify({...})</code></td><td>Identify user (name, email, userId)</td></tr>
+          <tr><td><code>Markdesk.article(slug)</code></td><td>Open a specific article</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Email Providers</h2>
+      <p>The contact form supports three email providers out of the box:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Config Value</th>
+            <th>Environment Variable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Resend</td><td><code>'resend'</code></td><td><code>RESEND_API_KEY</code></td></tr>
+          <tr><td>SendGrid</td><td><code>'sendgrid'</code></td><td><code>SENDGRID_API_KEY</code></td></tr>
+          <tr><td>Nodemailer</td><td><code>'nodemailer'</code></td><td><code>SMTP_HOST</code>, <code>SMTP_PORT</code>, <code>SMTP_USER</code>, <code>SMTP_PASS</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>Markdesk is open source. <a href="https://github.com/charlieclark/markdesk">View on GitHub</a></p>
+  </footer>
+
+</body>
+</html>
