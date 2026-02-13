@@ -47,7 +47,12 @@ All settings live in `markdesk.config.ts`:
   emailSender: 'resend',               // 'sendgrid' | 'resend' | 'nodemailer'
   footer: { termsUrl: '', privacyUrl: '' },
   allowedOrigins: [],                   // Additional CORS origins for beacon
-  beacon: { title: 'Help' },           // Beacon panel title
+  beacon: {
+    title: 'Help',                 // Beacon panel title
+    autoShowModal: true,           // Auto-show latest update as a modal popup
+    modalDelay: 5000,              // Delay (ms) before showing the modal
+    modalMaxAgeDays: 180,          // Hide modal for updates older than this
+  },
 }
 ```
 
@@ -90,6 +95,8 @@ slug: "new-feature-name"
 date: "2026-02-13"
 category: "new"       # new | improvement | fix | announcement | coming-soon
 showModal: true       # show as popup in beacon
+ctaLabel: "Try it out" # optional — adds a CTA button to the update
+ctaUrl: "https://example.com/feature"  # optional — URL for the CTA button
 ---
 
 Update body in markdown here.
