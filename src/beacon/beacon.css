@@ -341,7 +341,7 @@
 #markdesk-beacon .mdb-article-body a { color: #000; text-decoration: underline; cursor: pointer; }
 #markdesk-beacon .mdb-article-body code { background: #f7f8fa; padding: 2px 4px; border-radius: 3px; font-size: 12px; }
 #markdesk-beacon .mdb-article-body strong { font-weight: 600; }
-#markdesk-beacon .mdb-article-body img { display: block; max-width: 100%; border-radius: 6px; margin: 8px 0; border: 1px solid #d1d5db; }
+#markdesk-beacon .mdb-article-body img { display: block; max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; border: 1px solid #d1d5db; overflow: hidden; clip-path: inset(0 round 8px); }
 #markdesk-beacon .mdb-article-body table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
 #markdesk-beacon .mdb-article-body th { display: table-cell; text-align: left; font-weight: 600; padding: 6px 8px; border-bottom: 2px solid #e5e7eb; background: #f7f8fa; }
 #markdesk-beacon .mdb-article-body td { display: table-cell; padding: 6px 8px; border-bottom: 1px solid #e5e7eb; }
@@ -616,7 +616,7 @@
 #markdesk-beacon .mdb-modal-body ol { list-style: decimal; }
 #markdesk-beacon .mdb-modal-body li { display: list-item; margin: 4px 0; }
 #markdesk-beacon .mdb-modal-body strong { font-weight: 600; }
-#markdesk-beacon .mdb-modal-body img { display: block; max-width: 100%; border-radius: 6px; margin: 8px 0; border: 1px solid #d1d5db; }
+#markdesk-beacon .mdb-modal-body img { display: block; max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; border: 1px solid #d1d5db; overflow: hidden; clip-path: inset(0 round 8px); }
 #markdesk-beacon .mdb-modal-body table { display: table; width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
 #markdesk-beacon .mdb-modal-body th { display: table-cell; text-align: left; font-weight: 600; padding: 6px 8px; border-bottom: 2px solid #e5e7eb; background: #f7f8fa; }
 #markdesk-beacon .mdb-modal-body td { display: table-cell; padding: 6px 8px; border-bottom: 1px solid #e5e7eb; }
