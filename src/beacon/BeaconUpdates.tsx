@@ -12,7 +12,6 @@ interface UpdateMeta {
 
 interface BeaconUpdatesProps {
   helpCenterUrl: string;
-  userId?: string;
   onMarkSeen: () => void;
   onViewUpdate: (slug: string) => void;
 }
@@ -25,7 +24,7 @@ const badgeLabels: Record<string, string> = {
   announcement: 'Announcement',
 };
 
-export default function BeaconUpdates({ helpCenterUrl, userId, onMarkSeen, onViewUpdate }: BeaconUpdatesProps) {
+export default function BeaconUpdates({ helpCenterUrl, onMarkSeen, onViewUpdate }: BeaconUpdatesProps) {
   const [updates, setUpdates] = useState<UpdateMeta[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,17 +33,14 @@ export default function BeaconUpdates({ helpCenterUrl, userId, onMarkSeen, onVie
       .then((res) => res.json())
       .then((data: UpdateMeta[]) => {
         setUpdates(data);
-        if (userId && data.length > 0) {
-          localStorage.setItem(
-            `markdesk-last-seen-update-${userId}`,
-            data[0].date
-          );
+        if (data.length > 0) {
+          localStorage.setItem('markdesk-last-seen-update', data[0].date);
           onMarkSeen();
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [helpCenterUrl, userId, onMarkSeen]);
+  }, [helpCenterUrl, onMarkSeen]);
 
   if (loading) {
     return <div class="mdb-empty">Loading updates...</div>;

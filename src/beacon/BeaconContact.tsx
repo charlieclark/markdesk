@@ -4,11 +4,10 @@ import { useState } from 'preact/hooks';
 
 interface BeaconContactProps {
   helpCenterUrl: string;
-  userId?: string;
   userEmail?: string;
 }
 
-export default function BeaconContact({ helpCenterUrl, userId, userEmail }: BeaconContactProps) {
+export default function BeaconContact({ helpCenterUrl, userEmail }: BeaconContactProps) {
   const [email, setEmail] = useState(userEmail || '');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
@@ -21,7 +20,7 @@ export default function BeaconContact({ helpCenterUrl, userId, userEmail }: Beac
     fetch(`${helpCenterUrl}/api/contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, subject, message, userId }),
+      body: JSON.stringify({ email, subject, message }),
     })
       .then((res) => {
         if (!res.ok) throw new Error();

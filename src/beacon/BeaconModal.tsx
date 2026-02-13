@@ -14,7 +14,6 @@ interface UpdateWithContent {
 
 interface BeaconModalProps {
   helpCenterUrl: string;
-  userId: string;
   onDismiss?: () => void;
 }
 
@@ -26,7 +25,7 @@ const badgeLabels: Record<string, string> = {
   announcement: 'Announcement',
 };
 
-export default function BeaconModal({ helpCenterUrl, userId, onDismiss }: BeaconModalProps) {
+export default function BeaconModal({ helpCenterUrl, onDismiss }: BeaconModalProps) {
   const [update, setUpdate] = useState<UpdateWithContent | null>(null);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function BeaconModal({ helpCenterUrl, userId, onDismiss }: Beacon
     fetch(`${helpCenterUrl}/content/updates.json`)
       .then((res) => res.json())
       .then(async (updates) => {
-        const dismissedDate = localStorage.getItem(`markdesk-dismissed-${userId}`);
+        const dismissedDate = localStorage.getItem('markdesk-dismissed');
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
@@ -60,11 +59,11 @@ export default function BeaconModal({ helpCenterUrl, userId, onDismiss }: Beacon
         });
       })
       .catch(() => {});
-  }, [helpCenterUrl, userId]);
+  }, [helpCenterUrl]);
 
   function handleDismiss() {
     if (!update) return;
-    localStorage.setItem(`markdesk-dismissed-${userId}`, update.date);
+    localStorage.setItem('markdesk-dismissed', update.date);
     setUpdate(null);
     onDismiss?.();
   }

@@ -8,30 +8,20 @@ import BeaconModal from './BeaconModal';
 interface Config {
   helpCenterUrl: string;
   position?: string;
-  userId?: string;
   title?: string;
-}
-
-interface UserInfo {
-  name?: string;
-  email?: string;
-  userId?: string;
-  showModal?: boolean;
+  autoShowModal?: boolean;
 }
 
 export default function BeaconApp({ config }: { config: Config }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>('answers');
   const [badgeCount, setBadgeCount] = useState(0);
-  const [userInfo, setUserInfo] = useState<UserInfo>({});
+  const [userEmail, setUserEmail] = useState<string>();
+  const [modalEnabled, setModalEnabled] = useState(config.autoShowModal !== false);
 
   const helpCenterUrl = config.helpCenterUrl.replace(/\/$/, '');
-  const userId = userInfo.userId || config.userId;
 
-  // Check for unseen updates (logged-in users only)
   const checkUnseen = useCallback(() => {
-    if (!userId) return;
-
     fetch(`${helpCenterUrl}/content/updates.json`)
       .then((res) => res.json())
       .then((updates: { date: string }[]) => {
@@ -40,18 +30,13 @@ export default function BeaconApp({ config }: { config: Config }) {
           return;
         }
 
-        const lastSeen = localStorage.getItem(
-          `markdesk-last-seen-update-${userId}`
-        );
-        const lastDismissed = localStorage.getItem(
-          `markdesk-dismissed-${userId}`
-        );
+        const lastSeen = localStorage.getItem('markdesk-last-seen-update');
+        const lastDismissed = localStorage.getItem('markdesk-dismissed');
 
         let unseenCount = lastSeen
           ? updates.filter((u) => new Date(u.date) > new Date(lastSeen)).length
           : updates.length;
 
-        // If the user dismissed a modal update that's among the unseen, subtract 1
         if (lastDismissed && (!lastSeen || new Date(lastDismissed) >= new Date(lastSeen)) && unseenCount > 0) {
           unseenCount--;
         }
@@ -59,7 +44,7 @@ export default function BeaconApp({ config }: { config: Config }) {
         setBadgeCount(unseenCount);
       })
       .catch(() => {});
-  }, [userId, helpCenterUrl]);
+  }, [helpCenterUrl]);
 
   useEffect(() => {
     checkUnseen();
@@ -82,16 +67,15 @@ export default function BeaconApp({ config }: { config: Config }) {
       },
       close: () => setIsOpen(false),
       toggle: () => setIsOpen((prev) => !prev),
-      identify: (info: UserInfo) => {
-        if (!info.userId && info.name) {
-          info.userId = info.name;
-        }
-        setUserInfo(info);
+      identify: (info: { email?: string }) => {
+        if (info.email) setUserEmail(info.email);
+      },
+      showModal: () => {
+        setModalEnabled(true);
       },
       article: (slug: string) => {
         setActiveTab('answers');
         setIsOpen(true);
-        // Slight delay to let panel render before setting article
         setTimeout(() => {
           (window as any).__markdeskViewArticle?.(slug);
         }, 50);
@@ -113,8 +97,8 @@ export default function BeaconApp({ config }: { config: Config }) {
 
   return (
     <div>
-      {userId && userInfo.showModal !== false && (
-        <BeaconModal helpCenterUrl={helpCenterUrl} userId={userId} onDismiss={checkUnseen} />
+      {modalEnabled && (
+        <BeaconModal helpCenterUrl={helpCenterUrl} onDismiss={checkUnseen} />
       )}
 
       {isOpen && <div class="mdb-mobile-overlay" onClick={handleClose} />}
@@ -122,8 +106,7 @@ export default function BeaconApp({ config }: { config: Config }) {
       {isOpen && (
         <BeaconPanel
           helpCenterUrl={helpCenterUrl}
-          userId={userId}
-          userEmail={userInfo.email}
+          userEmail={userEmail}
           activeTab={activeTab}
           badgeCount={badgeCount}
           onClose={handleClose}

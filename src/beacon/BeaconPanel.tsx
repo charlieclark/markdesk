@@ -12,7 +12,6 @@ export type TabId = "answers" | "ask" | "updates";
 
 interface BeaconPanelProps {
   helpCenterUrl: string;
-  userId?: string;
   userEmail?: string;
   activeTab: TabId;
   badgeCount: number;
@@ -23,7 +22,6 @@ interface BeaconPanelProps {
 
 export default function BeaconPanel({
   helpCenterUrl,
-  userId,
   userEmail,
   activeTab: initialTab,
   badgeCount,
@@ -105,14 +103,12 @@ export default function BeaconPanel({
         {activeTab === "ask" && (
           <BeaconContact
             helpCenterUrl={helpCenterUrl}
-            userId={userId}
             userEmail={userEmail}
           />
         )}
         {activeTab === "updates" && !viewingUpdate && (
           <BeaconUpdates
             helpCenterUrl={helpCenterUrl}
-            userId={userId}
             onMarkSeen={onMarkSeen}
             onViewUpdate={setViewingUpdate}
           />
