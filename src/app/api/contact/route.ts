@@ -5,7 +5,10 @@ import { getEmailSender } from '@/lib/email';
 function isAllowedOrigin(origin: string): boolean {
   const { allowedOrigins, siteUrl } = getConfig();
   const allowed = [siteUrl, ...allowedOrigins].filter(Boolean);
-  if (allowed.includes(origin)) return true;
+  try {
+    const hostname = new URL(origin).hostname;
+    if (allowed.some((a) => a === origin || a === hostname)) return true;
+  } catch {}
   if (process.env.NODE_ENV === 'development' && origin.startsWith('http://localhost:')) return true;
   return false;
 }
