@@ -28,13 +28,23 @@ Use `AskUserQuestion` to ask the user the following (you can batch multiple ques
    - Nodemailer (SMTP)
 7. **Support email** — What email should contact form submissions go to?
 
-## Step 2: Clone and Set Up
+## Step 2: Clone and Clean Up
+
+Clone the repo, remove git history, and delete files that are specific to the Markdesk project (not part of the help center template):
 
 ```bash
 git clone https://github.com/charlieclark/markdesk.git <directory-name>
 cd <directory-name>
 rm -rf .git
+rm -rf skills/
+rm -rf docs/
+rm -rf .github/
 ```
+
+These deleted files are:
+- `skills/` — Vercel Skills for scaffolding markdesk (not needed in the user's project)
+- `docs/` — GitHub Pages marketing site for the markdesk project
+- `.github/` — GitHub Actions workflow for the markdesk marketing site
 
 ## Step 3: Update Configuration
 
@@ -52,14 +62,102 @@ const config: MarkdeskConfig = {
   colors: { primary: '<primary-color>' },
   emailSender: '<chosen-sender>',
   footer: { termsUrl: '', privacyUrl: '' },
-  allowedOrigins: ['<product-url>'],
+  allowedOrigins: ['<product-domain>'],
   beacon: { title: 'Help' },
 };
 
 export default config;
 ```
 
-## Step 4: Install Email Dependency
+## Step 4: Rewrite README
+
+Replace `README.md` with a project-specific README. Use this template, filling in the user's brand name and URLs:
+
+```markdown
+# <Brand Name> Help Center
+
+Help center for <Brand Name>, built with [Markdesk](https://github.com/charlieclark/markdesk).
+
+## Development
+
+\`\`\`bash
+npm install
+npm run dev
+\`\`\`
+
+## Build
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+Runs in order:
+1. Generates search index from articles
+2. Pre-renders article/update content as static JSON
+3. Bundles beacon widget into `public/beacon.js`
+4. Builds the Next.js site
+
+## Content
+
+### Adding a help article
+
+Create a markdown file in `content/articles/{category}/`:
+
+\`\`\`yaml
+---
+title: "Article Title"
+slug: "article-slug"
+category: "getting-started"
+description: "Short description."
+order: 1
+faq: false
+createdAt: "YYYY-MM-DD"
+updatedAt: "YYYY-MM-DD"
+---
+
+Article content here.
+\`\`\`
+
+### Adding a product update
+
+Create a markdown file in `content/updates/` named `YYYY-MM-DD-slug.md`:
+
+\`\`\`yaml
+---
+title: "Update Title"
+slug: "update-slug"
+date: "YYYY-MM-DD"
+category: "new"
+showModal: true
+---
+
+Update content here.
+\`\`\`
+
+### Categories
+
+Edit `src/lib/categories.ts` to customize. Defaults: `getting-started`, `features`, `troubleshooting`.
+
+## Beacon
+
+Embed on your site:
+
+\`\`\`html
+<script>
+  window.MarkdeskConfig = {
+    helpCenterUrl: '<help-center-url>',
+    title: 'Help',
+  };
+</script>
+<script src="<help-center-url>/beacon.js" async></script>
+\`\`\`
+
+## Deployment
+
+Deploy to Vercel, Netlify, or any Node.js host that supports Next.js.
+```
+
+## Step 5: Install Email Dependency
 
 Based on the chosen email sender, install the appropriate package:
 
@@ -67,13 +165,13 @@ Based on the chosen email sender, install the appropriate package:
 - **SendGrid**: `npm install @sendgrid/mail`
 - **Nodemailer**: `npm install nodemailer`
 
-## Step 5: Install Dependencies
+## Step 6: Install Dependencies
 
 ```bash
 npm install
 ```
 
-## Step 6: Create .env
+## Step 7: Create .env
 
 Copy `.env.example` to `.env` and fill in the relevant API key:
 
@@ -83,7 +181,7 @@ Copy `.env.example` to `.env` and fill in the relevant API key:
 
 Also set `NEXT_PUBLIC_SITE_URL` to the help center URL.
 
-## Step 7: Explain Next Steps
+## Step 8: Explain Next Steps
 
 Tell the user:
 
