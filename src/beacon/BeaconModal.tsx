@@ -15,6 +15,7 @@ interface UpdateWithContent {
 interface BeaconModalProps {
   helpCenterUrl: string;
   delay?: number;
+  maxAgeDays?: number;
   onDismiss?: () => void;
 }
 
@@ -26,7 +27,7 @@ const badgeLabels: Record<string, string> = {
   announcement: 'Announcement',
 };
 
-export default function BeaconModal({ helpCenterUrl, delay = 5000, onDismiss }: BeaconModalProps) {
+export default function BeaconModal({ helpCenterUrl, delay = 5000, maxAgeDays = 180, onDismiss }: BeaconModalProps) {
   const [update, setUpdate] = useState<UpdateWithContent | null>(null);
   const [ready, setReady] = useState(delay <= 0);
 
@@ -44,14 +45,13 @@ export default function BeaconModal({ helpCenterUrl, delay = 5000, onDismiss }: 
       .then((res) => res.json())
       .then(async (updates) => {
         const dismissedDate = localStorage.getItem('markdesk-dismissed');
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - maxAgeDays);
 
-        // Only show modal updates newer than the last dismissed date and less than 6 months old
         const modalUpdate = updates.find(
           (u: { showModal?: boolean; date: string }) =>
             u.showModal &&
-            new Date(u.date) > sixMonthsAgo &&
+            new Date(u.date) > cutoff &&
             (!dismissedDate || new Date(u.date) > new Date(dismissedDate))
         );
 

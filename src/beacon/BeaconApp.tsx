@@ -11,6 +11,7 @@ interface Config {
   title?: string;
   autoShowModal?: boolean;
   modalDelay?: number;
+  modalMaxAgeDays?: number;
 }
 
 export default function BeaconApp({ config }: { config: Config }) {
@@ -99,7 +100,7 @@ export default function BeaconApp({ config }: { config: Config }) {
   return (
     <div>
       {modalEnabled && (
-        <BeaconModal helpCenterUrl={helpCenterUrl} delay={config.modalDelay ?? 5000} onDismiss={checkUnseen} />
+        <BeaconModal helpCenterUrl={helpCenterUrl} delay={config.modalDelay ?? 5000} maxAgeDays={config.modalMaxAgeDays ?? 180} onDismiss={checkUnseen} />
       )}
 
       {isOpen && <div class="mdb-mobile-overlay" onClick={handleClose} />}
