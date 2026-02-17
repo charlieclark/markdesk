@@ -145,6 +145,8 @@ window.Markdesk.toggle()
 window.Markdesk.identify({ email })  // Pre-fill contact form email
 window.Markdesk.showModal()          // Enable modal (when autoShowModal is false)
 window.Markdesk.article(slug)        // Open a specific article in the beacon
+window.Markdesk.ask()                // Open beacon to Contact tab
+window.Markdesk.ask({ subject, message })  // Open Contact tab with prefilled subject and/or message
 ```
 
 ## API Routes
