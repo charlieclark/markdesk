@@ -19,6 +19,7 @@ export default function BeaconApp({ config }: { config: Config }) {
   const [activeTab, setActiveTab] = useState<TabId>('answers');
   const [badgeCount, setBadgeCount] = useState(0);
   const [userEmail, setUserEmail] = useState<string>();
+  const [askPrefill, setAskPrefill] = useState<{ subject?: string; message?: string }>();
   const [modalEnabled, setModalEnabled] = useState(config.autoShowModal !== false);
 
   const helpCenterUrl = config.helpCenterUrl.replace(/\/$/, '');
@@ -75,6 +76,11 @@ export default function BeaconApp({ config }: { config: Config }) {
       showModal: () => {
         setModalEnabled(true);
       },
+      ask: (options?: { subject?: string; message?: string }) => {
+        if (options) setAskPrefill(options);
+        setActiveTab('ask');
+        setIsOpen(true);
+      },
       article: (slug: string) => {
         setActiveTab('answers');
         setIsOpen(true);
@@ -114,6 +120,9 @@ export default function BeaconApp({ config }: { config: Config }) {
           onClose={handleClose}
           onMarkSeen={handleMarkSeen}
           title={config.title}
+          prefillSubject={askPrefill?.subject}
+          prefillMessage={askPrefill?.message}
+          onPrefillConsumed={() => setAskPrefill(undefined)}
         />
       )}
 

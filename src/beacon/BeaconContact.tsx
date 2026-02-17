@@ -1,17 +1,28 @@
 /** @jsxImportSource preact */
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
 interface BeaconContactProps {
   helpCenterUrl: string;
   userEmail?: string;
+  prefillSubject?: string;
+  prefillMessage?: string;
+  onPrefillConsumed?: () => void;
 }
 
-export default function BeaconContact({ helpCenterUrl, userEmail }: BeaconContactProps) {
+export default function BeaconContact({ helpCenterUrl, userEmail, prefillSubject, prefillMessage, onPrefillConsumed }: BeaconContactProps) {
   const [email, setEmail] = useState(userEmail || '');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [subject, setSubject] = useState(prefillSubject || '');
+  const [message, setMessage] = useState(prefillMessage || '');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  useEffect(() => {
+    if (prefillSubject !== undefined || prefillMessage !== undefined) {
+      if (prefillSubject !== undefined) setSubject(prefillSubject);
+      if (prefillMessage !== undefined) setMessage(prefillMessage);
+      onPrefillConsumed?.();
+    }
+  }, [prefillSubject, prefillMessage]);
 
   function handleSubmit(e: Event) {
     e.preventDefault();

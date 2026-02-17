@@ -18,6 +18,9 @@ interface BeaconPanelProps {
   onClose: () => void;
   onMarkSeen: () => void;
   title?: string;
+  prefillSubject?: string;
+  prefillMessage?: string;
+  onPrefillConsumed?: () => void;
 }
 
 export default function BeaconPanel({
@@ -28,6 +31,9 @@ export default function BeaconPanel({
   onClose,
   onMarkSeen,
   title,
+  prefillSubject,
+  prefillMessage,
+  onPrefillConsumed,
 }: BeaconPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const [viewingArticle, setViewingArticle] = useState<string | null>(null);
@@ -104,6 +110,9 @@ export default function BeaconPanel({
           <BeaconContact
             helpCenterUrl={helpCenterUrl}
             userEmail={userEmail}
+            prefillSubject={prefillSubject}
+            prefillMessage={prefillMessage}
+            onPrefillConsumed={onPrefillConsumed}
           />
         )}
         {activeTab === "updates" && !viewingUpdate && (
