@@ -1,6 +1,6 @@
 /** @jsxImportSource preact */
 import { h } from 'preact';
-import { useState, useEffect, useCallback } from 'preact/hooks';
+import { useState, useEffect, useCallback, useRef } from 'preact/hooks';
 import BeaconButton from './BeaconButton';
 import BeaconPanel, { TabId } from './BeaconPanel';
 import BeaconModal from './BeaconModal';
@@ -21,6 +21,7 @@ export default function BeaconApp({ config }: { config: Config }) {
   const [userEmail, setUserEmail] = useState<string>();
   const [askPrefill, setAskPrefill] = useState<{ subject?: string; message?: string }>();
   const [modalEnabled, setModalEnabled] = useState(config.autoShowModal !== false);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   const helpCenterUrl = config.helpCenterUrl.replace(/\/$/, '');
 
@@ -103,8 +104,27 @@ export default function BeaconApp({ config }: { config: Config }) {
     setBadgeCount(0);
   }
 
+  function handleRootClick(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (target.tagName !== 'IMG') return;
+    const parent = target.closest('.mdb-article-body, .mdb-modal-body');
+    if (!parent) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setLightboxSrc((target as HTMLImageElement).src);
+  }
+
+  useEffect(() => {
+    if (!lightboxSrc) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxSrc(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [lightboxSrc]);
+
   return (
-    <div>
+    <div onClick={handleRootClick}>
       {modalEnabled && (
         <BeaconModal helpCenterUrl={helpCenterUrl} delay={config.modalDelay ?? 5000} maxAgeDays={config.modalMaxAgeDays ?? 180} onDismiss={checkUnseen} />
       )}
@@ -131,6 +151,12 @@ export default function BeaconApp({ config }: { config: Config }) {
         badgeCount={badgeCount}
         isOpen={isOpen}
       />
+
+      {lightboxSrc && (
+        <div class="mdb-lightbox-overlay" onClick={() => setLightboxSrc(null)}>
+          <img src={lightboxSrc} alt="" />
+        </div>
+      )}
     </div>
   );
 }
