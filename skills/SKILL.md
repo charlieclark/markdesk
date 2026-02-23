@@ -52,12 +52,12 @@ Use `AskUserQuestion` to ask the user the following (you can batch multiple ques
 
 ### Step 2: Clone and Clean Up
 
-Clone the repo, remove git history, and delete files that are specific to the Markdesk project (not part of the help center template):
+Clone the repo, rename the remote to `markdesk` (so the user can pull updates later), and delete files that are specific to the Markdesk project (not part of the help center template):
 
 ```bash
 git clone https://github.com/charlieclark/markdesk.git <directory-name>
 cd <directory-name>
-rm -rf .git
+git remote rename origin markdesk
 rm -rf skills/
 rm -rf docs/
 rm -rf .github/
@@ -179,6 +179,16 @@ Embed on your site:
 <script src="<help-center-url>/beacon.js" async></script>
 \`\`\`
 
+## Updating Markdesk
+
+Pull the latest source code from the Markdesk project:
+
+\`\`\`bash
+git fetch markdesk
+git merge markdesk/main
+npm install
+\`\`\`
+
 ## Deployment
 
 Deploy to Vercel, Netlify, or any Node.js host that supports Next.js.
@@ -226,6 +236,17 @@ Tell the user:
    ```
 4. **Run locally** — `npm run dev` to preview at `http://localhost:3000`
 5. **Deploy** — Deploy to Vercel, Netlify, or any Node.js host. Run `npm run build` to generate all assets.
+6. **Push to your own repo** — Add your own remote and push:
+   ```bash
+   git remote add origin <your-repo-url>
+   git push -u origin main
+   ```
+7. **Update markdesk** — Pull the latest markdesk source code anytime:
+   ```bash
+   git fetch markdesk
+   git merge markdesk/main
+   npm install
+   ```
 
 ---
 
