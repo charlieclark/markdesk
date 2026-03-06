@@ -141,6 +141,46 @@
   display: block;
 }
 
+/* Header actions */
+#markdesk-beacon .mdb-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#markdesk-beacon .mdb-settings-wrap {
+  position: relative;
+}
+
+#markdesk-beacon .mdb-settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  min-width: 160px;
+  z-index: 1;
+}
+
+#markdesk-beacon .mdb-settings-item {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #1d1d28;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#markdesk-beacon .mdb-settings-item:hover {
+  background: #f7f8fa;
+}
+
 /* Tabs */
 #markdesk-beacon .mdb-tabs {
   display: flex;

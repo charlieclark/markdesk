@@ -1,7 +1,7 @@
 /** @jsxImportSource preact */
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
-import { X } from "lucide-react";
+import { X, Settings } from "lucide-react";
 import BeaconSearch from "./BeaconSearch";
 import BeaconArticle from "./BeaconArticle";
 import BeaconContact from "./BeaconContact";
@@ -16,6 +16,7 @@ interface BeaconPanelProps {
   activeTab: TabId;
   badgeCount: number;
   onClose: () => void;
+  onDismiss: () => void;
   onMarkSeen: () => void;
   title?: string;
   prefillSubject?: string;
@@ -29,6 +30,7 @@ export default function BeaconPanel({
   activeTab: initialTab,
   badgeCount,
   onClose,
+  onDismiss,
   onMarkSeen,
   title,
   prefillSubject,
@@ -38,6 +40,7 @@ export default function BeaconPanel({
   const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const [viewingArticle, setViewingArticle] = useState<string | null>(null);
   const [viewingUpdate, setViewingUpdate] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
 
   // Expose article viewer for the public API
   useEffect(() => {
@@ -53,9 +56,23 @@ export default function BeaconPanel({
     <div class="mdb-panel">
       <div class="mdb-header">
         <span class="mdb-header-title">{title || 'Help'}</span>
-        <button class="mdb-close" onClick={onClose} aria-label="Close">
-          <X size={18} />
-        </button>
+        <div class="mdb-header-actions">
+          <div class="mdb-settings-wrap">
+            <button class="mdb-close" onClick={() => setShowSettings((v) => !v)} aria-label="Settings">
+              <Settings size={16} />
+            </button>
+            {showSettings && (
+              <div class="mdb-settings-menu">
+                <button class="mdb-settings-item" onClick={onDismiss}>
+                  Hide help widget
+                </button>
+              </div>
+            )}
+          </div>
+          <button class="mdb-close" onClick={onClose} aria-label="Close">
+            <X size={18} />
+          </button>
+        </div>
       </div>
 
       <div class="mdb-tabs">

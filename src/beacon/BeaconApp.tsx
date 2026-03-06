@@ -16,12 +16,24 @@ interface Config {
 
 export default function BeaconApp({ config }: { config: Config }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(() => sessionStorage.getItem('markdesk-beacon-dismissed') === '1');
   const [activeTab, setActiveTab] = useState<TabId>('answers');
   const [badgeCount, setBadgeCount] = useState(0);
   const [userEmail, setUserEmail] = useState<string>();
   const [askPrefill, setAskPrefill] = useState<{ subject?: string; message?: string }>();
   const [modalEnabled, setModalEnabled] = useState(config.autoShowModal !== false);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+
+  function dismiss() {
+    setIsDismissed(true);
+    setIsOpen(false);
+    sessionStorage.setItem('markdesk-beacon-dismissed', '1');
+  }
+
+  function undismiss() {
+    setIsDismissed(false);
+    sessionStorage.removeItem('markdesk-beacon-dismissed');
+  }
 
   const helpCenterUrl = config.helpCenterUrl.replace(/\/$/, '');
 
@@ -66,23 +78,31 @@ export default function BeaconApp({ config }: { config: Config }) {
   useEffect(() => {
     (window as any).Markdesk = {
       open: (tab?: TabId) => {
+        undismiss();
         if (tab) setActiveTab(tab);
         setIsOpen(true);
       },
       close: () => setIsOpen(false),
-      toggle: () => setIsOpen((prev) => !prev),
+      toggle: () => {
+        undismiss();
+        setIsOpen((prev) => !prev);
+      },
+      dismiss: () => dismiss(),
       identify: (info: { email?: string }) => {
         if (info.email) setUserEmail(info.email);
       },
       showModal: () => {
+        undismiss();
         setModalEnabled(true);
       },
       ask: (options?: { subject?: string; message?: string }) => {
+        undismiss();
         if (options) setAskPrefill(options);
         setActiveTab('ask');
         setIsOpen(true);
       },
       article: (slug: string) => {
+        undismiss();
         setActiveTab('answers');
         setIsOpen(true);
         setTimeout(() => {
@@ -123,6 +143,8 @@ export default function BeaconApp({ config }: { config: Config }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [lightboxSrc]);
 
+  if (isDismissed) return null;
+
   return (
     <div onClick={handleRootClick}>
       {modalEnabled && (
@@ -138,6 +160,7 @@ export default function BeaconApp({ config }: { config: Config }) {
           activeTab={activeTab}
           badgeCount={badgeCount}
           onClose={handleClose}
+          onDismiss={dismiss}
           onMarkSeen={handleMarkSeen}
           title={config.title}
           prefillSubject={askPrefill?.subject}
